@@ -1,10 +1,8 @@
 # NixOS System Configurations
 
-This repository contains my NixOS system configurations. This repository
-isn't meant to be a turnkey solution to copying my setup or learning Nix,
-so I want to apologize to anyone trying to look for something "easy". I've
-tried to use very simple Nix practices wherever possible, but if you wish
-to copy from this, you'll have to learn the basics of Nix, NixOS, etc.
+This repository contains my NixOS system configurations, forked from mitchellh's NixOS setup. Everything is mostly his config with some tweaks here and there.
+
+## Original
 
 I don't claim to be an expert at Nix or NixOS, so there are certainly
 improvements that could be made! Feel free to suggest them, but please don't
@@ -89,14 +87,14 @@ Create a VMware Fusion VM with the following settings. My configurations
 are made for VMware Fusion exclusively currently and you will have issues
 on other virtualization solutions without minor changes.
 
-  * ISO: NixOS 23.05 or later.
-  * Disk: SATA 150 GB+
-  * CPU/Memory: I give at least half my cores and half my RAM, as much as you can.
-  * Graphics: Full acceleration, full resolution, maximum graphics RAM.
-  * Network: Shared with my Mac.
-  * Remove sound card, remove video camera, remove printer.
-  * Profile: Disable almost all keybindings
-  * Boot Mode: UEFI
+- ISO: NixOS 23.05 or later.
+- Disk: SATA 150 GB+
+- CPU/Memory: I give at least half my cores and half my RAM, as much as you can.
+- Graphics: Full acceleration, full resolution, maximum graphics RAM.
+- Network: Shared with my Mac.
+- Remove sound card, remove video camera, remove printer.
+- Profile: Disable almost all keybindings
+- Boot Mode: UEFI
 
 Boot the VM, and using the graphical console, change the root password to "root":
 
