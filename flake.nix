@@ -74,17 +74,40 @@
     };
   in {
     darwinConfigurations = {
-      "macbook-pro-m1" = mkSystem "macbook-pro-m1" "aarch64-darwin" "austin";
-      "macbook-pro" = mkSystem "macbook-pro" "x86_64-darwin" "austin";
+      "macbook-pro-m1" = mkSystem "macbook-pro-m1" {
+        system = "aarch64-darwin";
+        user = "austin";
+        darwin = true;
+      };
+      "macbook-pro" = mkSystem "macbook-pro" {
+        system = "x86_64-darwin";
+        user = "austin";
+        darwin = true;
+      };
     };
 
     nixosConfigurations = {
-      "vm-intel" = mkSystem "vm-intel" "x86_64-linux" "austin";
-      "vm-aarch64" = mkSystem "vm-aarch64" "aarch64-linux" "austin";
-      "vm-aarch64-utm" = mkSystem "vm-aarch64-utm" "aarch64-linux" "austin";
-      "vm-aarch64-prl" = mkSystem "vm-aarch64-prl" "aarch64-linux" "austin";
-
-      "wsl" = mkSystem "wsl" "x86_64-linux" "austin";
+      "vm-intel" = mkSystem "vm-intel" {
+        system = "x86_64-linux";
+        user = "austin";
+      };
+      "vm-aarch64" = mkSystem "vm-aarch64" {
+        system = "aarch64-linux";
+        user = "austin";
+      };
+      "vm-aarch64-utm" = mkSystem "vm-aarch64-utm" {
+        system = "aarch64-linux";
+        user = "austin";
+      };
+      "vm-aarch64-prl" = mkSystem "vm-aarch64-prl" {
+        system = "aarch64-linux";
+        user = "austin";
+      };
+      "wsl" = mkSystem "wsl" {
+        system = "x86_64-linux";
+        user = "austin";
+        wsl = true;
+      };
     };
   };
 }
