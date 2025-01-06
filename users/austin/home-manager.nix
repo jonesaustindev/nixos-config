@@ -40,6 +40,7 @@ in {
     pkgs.jq
     pkgs.ripgrep
     pkgs.sentry-cli
+    pkgs.curl
     pkgs.tree
     pkgs.watch
 
@@ -48,6 +49,18 @@ in {
 
     # Node is required for Copilot.vim
     pkgs.nodejs
+
+    # elixir and postgres
+    pkgs.elixir
+    pkgs.postgresql
+    pkgs.inotify-tools
+
+    # Language servers
+    pkgs.lua-language-server
+    pkgs.nil # Nix LSP
+    pkgs.nodePackages.typescript-language-server
+    pkgs.elixir-ls
+
   ] ++ (lib.optionals isDarwin [
     # This is automatically setup on Linux
     pkgs.cachix
@@ -59,6 +72,7 @@ in {
     pkgs.valgrind
     pkgs.zathura
     pkgs.xfce.xfce4-terminal
+    inputs.ghostty.packages.${pkgs.system}.default
   ]);
 
   #---------------------------------------------------------------------
@@ -105,7 +119,7 @@ in {
   # Programs
   #---------------------------------------------------------------------
 
-  programs.gpg.enable = !isDarwin;
+  # programs.gpg.enable = !isDarwin;
 
   programs.bash = {
     enable = true;
@@ -181,12 +195,16 @@ in {
     ];
   };
 
+  programs.gpg = {
+    enable = !isDarwin;
+  };
+
   programs.git = {
     enable = true;
     userName = "Austin Jones";
     userEmail = "jonesaustindev@gmail.com";
     signing = {
-      key = "523D5DC389D273BC";
+      key = "EAD9F1E13E42EDCE";
       signByDefault = true;
     };
     aliases = {
@@ -284,46 +302,56 @@ in {
 
     withPython3 = true;
 
-    plugins = with pkgs; [
-      customVim.vim-copilot
-      customVim.vim-cue
-      customVim.vim-fish
-      customVim.vim-glsl
-      customVim.vim-misc
-      customVim.vim-pgsql
-      customVim.vim-tla
-      customVim.vim-zig
-      customVim.pigeon
-      customVim.AfterColors
+    extraConfig = ''
+      set runtimepath^=${inputs.nvim-config}
+      source ${inputs.nvim-config}/init.lua
+    '';
 
-      customVim.vim-nord
-      customVim.nvim-comment
-      customVim.nvim-conform
-      customVim.nvim-dressing
-      customVim.nvim-gitsigns
-      customVim.nvim-lualine
-      customVim.nvim-lspconfig
-      customVim.nvim-nui
-      customVim.nvim-plenary # required for telescope
-      customVim.nvim-telescope
-      customVim.nvim-treesitter
-      customVim.nvim-treesitter-playground
-      customVim.nvim-treesitter-textobjects
-
-      vimPlugins.vim-eunuch
-      vimPlugins.vim-markdown
-      vimPlugins.vim-nix
-      vimPlugins.typescript-vim
-      vimPlugins.nvim-treesitter-parsers.elixir
-    ] ++ (lib.optionals (!isWSL) [
-      # This is causing a segfaulting while building our installer
-      # for WSL so just disable it for now. This is a pretty
-      # unimportant plugin anyway.
-      customVim.nvim-web-devicons
-    ]);
-
-    extraConfig = (import ./vim-config.nix) { inherit sources; };
+    # plugins = with pkgs; [
+    #   customVim.vim-copilot
+    #   customVim.vim-cue
+    #   customVim.vim-fish
+    #   customVim.vim-glsl
+    #   customVim.vim-misc
+    #   customVim.vim-pgsql
+    #   customVim.vim-tla
+    #   customVim.vim-zig
+    #   customVim.pigeon
+    #   customVim.AfterColors
+    #
+    #   customVim.vim-nord
+    #   customVim.nvim-comment
+    #   customVim.nvim-conform
+    #   customVim.nvim-dressing
+    #   customVim.nvim-gitsigns
+    #   customVim.nvim-lualine
+    #   customVim.nvim-lspconfig
+    #   customVim.nvim-nui
+    #   customVim.nvim-plenary # required for telescope
+    #   customVim.nvim-telescope
+    #   customVim.nvim-treesitter
+    #   customVim.nvim-treesitter-playground
+    #   customVim.nvim-treesitter-textobjects
+    #
+    #   vimPlugins.vim-eunuch
+    #   vimPlugins.vim-markdown
+    #   vimPlugins.vim-nix
+    #   vimPlugins.typescript-vim
+    #   vimPlugins.nvim-treesitter-parsers.elixir
+    # ] ++ (lib.optionals (!isWSL) [
+    #   # This is causing a segfaulting while building our installer
+    #   # for WSL so just disable it for now. This is a pretty
+    #   # unimportant plugin anyway.
+    #   customVim.nvim-web-devicons
+    # ]);
+    #
+    # extraConfig = (import ./vim-config.nix) { inherit sources; };
   };
+
+  # services.gpg-agent = {
+  #   enable = isLinux;
+  #   pinentryFlavor = "tty";
+  # };
 
   services.gpg-agent = {
     enable = isLinux;

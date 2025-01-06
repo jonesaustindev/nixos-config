@@ -13,7 +13,7 @@
   users.users.austin = {
     isNormalUser = true;
     home = "/home/austin";
-    extraGroups = [ "docker" "wheel" ];
+    extraGroups = [ "docker" "wheel" "postgres" ];
     shell = pkgs.fish;
     hashedPassword = "$6$B3Dht0DM5AgoKSQQ$Gch.GPw.vzsArVHL.BD3fGxKHhkmv433b1tgU4jB8ZRlMQTr6bWG.9LQiPxFB34ZAOlPmiwncEq1LvT96umP1.";
     openssh.authorizedKeys.keys = [
